@@ -7,13 +7,30 @@
 
 </head>
 <body>
-<form action="../upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" accept="image/*">
-    <br>
-    <input type="submit" value="上传" class="btn btn-success">
-</form>
+<!--<form action="../upload" method="post" enctype="multipart/form-data">-->
+<!--    <input type="file" name="file" accept="image/*">-->
+<!--    <br>-->
+<!--    <input type="submit" value="上传" class="btn btn-success">-->
+<!--</form>-->
 <p id="id1"></p>
-
+<p>
+<form id="attachments2" enctype="multipart/form-data" class="form-horizontal" novalidate="novalidate">
+    <div class='form-body'>
+        <div class='form-group'>
+            <label class="control-label col-md-1">附件管理：</label>
+            <div class="col-md-4">
+                <button id="attachmentUploadBtn2" type="button" class="btn btn-default">Upload</button>
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class="control-label col-md-1">附件上传：</label>
+            <div id="attachmentInputs2" class="col-md-3">
+                <input name="attachment" type="file" class="form-control input-attachment" multiple="multiple"/>
+            </div>
+        </div>
+    </div>
+</form>
+</p>
 
 <br>
 <img th:src="@{${filename}}" alt="图片">
@@ -21,6 +38,37 @@
     var imgUrl = '[[${filename}]]';
     var str = "&lt;p&gt;&lt;img src=&quot;" + imgUrl + "&quot;  style=&quot;width:1125px;height:1160px;&quot;/&gt;&lt;/p&gt;"
     document.getElementById("id1").innerText = str;
+
+    //upload2
+    $("#attachmentUploadBtn2").click(function (even) {
+        //1、通过HTML表单创建FormData对象 自动注入
+        // var formData = new FormData($("#attachments2")[0]);
+
+        //2、从零开始创建FormData对象 手动注入
+        var formData = new FormData();
+        //注入 name=file
+        var files = $("#attachmentInputs2 input[type='file']");
+        for (var i = 0; i < files[0].files.length; i++) {
+            formData.append("attachment", files[0].files[i]);
+        }
+        //注入name=text
+        formData.append("applyId", "123456");
+
+        console.log(formData.getAll("attachment"));
+
+        //执行上传
+        $.ajax({
+            url: "../upload",
+            type: "post",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+            },
+            error: function (e) {
+            }
+        });
+    });
 </script>
 </body>
 </html>
