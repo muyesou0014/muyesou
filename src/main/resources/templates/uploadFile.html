@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.3.1/jquery.min.js"></script>
     <title>Title</title>
 
 </head>
@@ -12,7 +13,7 @@
 <!--    <br>-->
 <!--    <input type="submit" value="上传" class="btn btn-success">-->
 <!--</form>-->
-<p id="id1"></p>
+
 <p>
 <form id="attachments2" enctype="multipart/form-data" class="form-horizontal" novalidate="novalidate">
     <div class='form-body'>
@@ -31,13 +32,11 @@
     </div>
 </form>
 </p>
-
+<br/>
+<p id="id1"></p>
 <br>
-<img th:src="@{${filename}}" alt="图片">
+<!--<img th:src="@{${filename}}" alt="图片">-->
 <script>
-    var imgUrl = '[[${filename}]]';
-    var str = "&lt;p&gt;&lt;img src=&quot;" + imgUrl + "&quot;  style=&quot;width:1125px;height:1160px;&quot;/&gt;&lt;/p&gt;"
-    document.getElementById("id1").innerText = str;
 
     //upload2
     $("#attachmentUploadBtn2").click(function (even) {
@@ -54,7 +53,7 @@
         //注入name=text
         formData.append("applyId", "123456");
 
-        console.log(formData.getAll("attachment"));
+        // console.log(formData.getAll("attachment"));
 
         //执行上传
         $.ajax({
@@ -64,6 +63,16 @@
             processData: false,
             contentType: false,
             success: function (data) {
+                // var imgimput = '[[${filename}]]';
+                // //var str = imgimput
+                // $("#id1").text(imgimput);
+               // console.log("success"+data);
+                 // alert(data);
+                var result="";
+                for (var value of data) {
+                    result+=value+"\n";
+                }
+                document.getElementById("id1").innerText=result;
             },
             error: function (e) {
             }
